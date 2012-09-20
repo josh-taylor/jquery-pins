@@ -8,7 +8,7 @@ A jQuery plugin to display posts in a pin board style.
 
 Live examples coming soon...
 
-## Useage
+## Usage
 
 ### HTML
 ```html
