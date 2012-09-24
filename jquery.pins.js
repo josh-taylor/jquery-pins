@@ -31,15 +31,16 @@
 			$(options.pin).each(function(i) {
 				var top = _methods.getPinY($(this));
 				var left = _methods.getPinX($(this));
+				var animateTop = top + 30;
 				
 				$(this).css({
-					top: (options.animate ? (top + 30) + 'px' : top + 'px'),
+					top: top + 'px',
 					left: left + 'px'
 				});
 				
 				if (options.animate) {
 					var self = $(this);
-					window.setTimeout(function() {_methods.animate(self, top)}, 
+					window.setTimeout(function() {_methods.animate(self, animateTop, top)}, 
 						options.animateDelay * i);
 				}
 			});
@@ -68,10 +69,13 @@
 				return 0;
 			}
 		},
-		animate: function(element, toX) {
-			element.animate({
+		animate: function(element, fromY, toY) {
+			element.css({
+				opacity: 0,
+				top: fromY + 'px'
+			}).animate({
 				opacity: 1,
-				top: toX + 'px'
+				top: toY + 'px'
 			}, options.animateTime);
 		}
 	}
