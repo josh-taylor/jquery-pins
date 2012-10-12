@@ -1,7 +1,7 @@
 (function($) {
-	
+
 	var options = {};
-	
+
 	var methods = {
 		init: function(opts) {
 			var defaults = {
@@ -12,19 +12,19 @@
 				animateTime: 300,
 				animateDelay: 200
 			}
-			
+
 			options = $.extend(true, defaults, opts);
 			options.selector = $(options.pin);
-			
+
 			// Add the css rules
 			this.css({
 				position: 'relative'
 			});
-			
+
 			if (options.animate) {
 				options.selector.css('opacity', 0);
 			}
-			
+
 			return methods.reposition.apply(this, arguments);
 		},
 		reposition: function() {
@@ -32,23 +32,24 @@
 				var top = _methods.getPinY($(this));
 				var left = _methods.getPinX($(this));
 				var animateTop = top + 30;
-				
+
 				$(this).css({
+					position: 'absolute',
 					top: top + 'px',
 					left: left + 'px'
 				});
-				
+
 				if (options.animate) {
 					var self = $(this);
-					window.setTimeout(function() {_methods.animate(self, animateTop, top)}, 
+					window.setTimeout(function() {_methods.animate(self, animateTop, top)},
 						options.animateDelay * i);
 				}
 			});
-			
+
 			return this;
 		}
 	};
-	
+
 	var _methods = {
 		getPinX: function(element) {
 			var index = element.index();
@@ -58,7 +59,7 @@
 		},
 		getPinY: function(element) {
 			var index = element.index();
-			
+
 			var aboveIndex = index - options.columns;
 			if (aboveIndex >= 0) {
 				var aboveElement = options.selector.eq(aboveIndex);
@@ -79,7 +80,7 @@
 			}, options.animateTime);
 		}
 	}
-	
+
 	$.fn.pins = function(method) {
 		if (methods[method]) {
 			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -89,5 +90,5 @@
 			$.error('Method ' + method + ' does not exist in jQuery pins');
 		}
 	}
-	
+
 }) (jQuery);
