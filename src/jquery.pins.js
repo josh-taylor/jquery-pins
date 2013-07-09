@@ -25,7 +25,10 @@
                 options.selector.css('opacity', 0);
             }
 
-            return methods.reposition.apply(this, arguments);
+            methods.reposition.apply(this, arguments);
+            var totalHeight = methods.calculateHeight.apply(this);
+            this.height(totalHeight);
+            return this;
         },
         reposition: function() {
             $(options.pin).each(function(i) {
@@ -47,6 +50,27 @@
             });
 
             return this;
+        },
+        calculateHeight: function() {
+            var rows = Math.ceil($(options.pin).length / options.columns);
+
+            var totalHeight = 0;
+            for (var row = 0; row < rows; ++row) {
+                var maxHeight = 0;
+                for (var col = 0; col < options.columns; ++col) {
+                    var index = (row * options.columns) + col;
+                    if ($(options.pin).eq(index).length == 0) {
+                        break;
+                    }
+
+                    var height = $(options.pin).eq(index).outerHeight(true);
+                    if (height > maxHeight) {
+                        maxHeight = height;
+                    }
+                }
+                totalHeight += maxHeight;
+            }
+            return totalHeight;
         }
     };
 
