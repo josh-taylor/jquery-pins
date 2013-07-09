@@ -4,6 +4,7 @@
 
     var methods = {
         init: function(opts) {
+            var self = this;
             var defaults = {
                 pin: '.pin',
                 margin: 10,
@@ -25,10 +26,27 @@
                 options.selector.css('opacity', 0);
             }
 
+            // Listen for when the images have loaded
+            var images = this.find('img');
+            var allLoaded = true;
+            images.each(function() {
+                if (!this.complete) {
+                    allLoaded = false;
+                    $(this).load(function() {
+                        methods.onLoad.apply(self);
+                    });
+                }
+            });
+
+            if (allLoaded) {
+                methods.onLoad.apply(this);
+            };
+            return this;
+        },
+        onLoad: function() {
             methods.reposition.apply(this, arguments);
             var totalHeight = methods.calculateHeight.apply(this);
             this.height(totalHeight);
-            return this;
         },
         reposition: function() {
             $(options.pin).each(function(i) {
