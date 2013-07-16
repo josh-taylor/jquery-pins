@@ -73,20 +73,25 @@
             var rows = Math.ceil($(options.pin).length / options.columns);
 
             var totalHeight = 0;
-            for (var row = 0; row < rows; ++row) {
-                var maxHeight = 0;
-                for (var col = 0; col < options.columns; ++col) {
+            for (var col = 0; col < options.columns; ++col) {
+                var colHeight = 0;
+                for (var row = 0; row < rows; ++row) {
                     var index = (row * options.columns) + col;
-                    if ($(options.pin).eq(index).length == 0) {
+                    var pin = $(options.pin).eq(index);
+                    if (pin.length == 0) {
                         break;
                     }
 
-                    var height = $(options.pin).eq(index).outerHeight(true);
-                    if (height > maxHeight) {
-                        maxHeight = height;
+                    var margin = options.margin;
+                    if (row == rows - 1) {
+                        margin = 0;
                     }
+                    colHeight += (pin.outerHeight(true) + margin);
                 }
-                totalHeight += maxHeight;
+
+                if (colHeight > totalHeight) {
+                    totalHeight = colHeight;
+                }
             }
             return totalHeight;
         }
