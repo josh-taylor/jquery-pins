@@ -1,10 +1,11 @@
 (function($) {
 
     var options = {};
+    var self;
 
     var methods = {
         init: function(opts) {
-            var self = this;
+            self = this;
             var defaults = {
                 pin: '.pin',
                 margin: 10,
@@ -44,12 +45,12 @@
             return this;
         },
         onLoad: function() {
-            methods.reposition.apply(this, arguments);
-            var totalHeight = methods.calculateHeight.apply(this);
+            methods.reposition.apply(this, [self]);
+            var totalHeight = methods.calculateHeight.apply(this, [self]);
             this.height(totalHeight);
         },
-        reposition: function() {
-            $(options.pin).each(function(i) {
+        reposition: function(parent) {
+            $(options.pin, parent).each(function(i) {
                 var top = _methods.getPinY($(this));
                 var left = _methods.getPinX($(this));
                 var animateTop = top + 30;
@@ -69,8 +70,8 @@
 
             return this;
         },
-        calculateHeight: function() {
-            var rows = Math.ceil($(options.pin).length / options.columns);
+        calculateHeight: function(parent) {
+            var rows = Math.ceil($(options.pin, parent).length / options.columns);
 
             var totalHeight = 0;
             for (var col = 0; col < options.columns; ++col) {
@@ -122,9 +123,9 @@
                 opacity: 0,
                 top: fromY + 'px'
             }).animate({
-                opacity: 1,
-                top: toY + 'px'
-            }, options.animateTime);
+                    opacity: 1,
+                    top: toY + 'px'
+                }, options.animateTime);
         }
     }
 
